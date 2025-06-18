@@ -1,6 +1,7 @@
 "use client"
 import MenuList from '@/app/_utils/MenuList'
 import { Button } from '@/components/ui/button'
+import { UserButton, useUser } from '@clerk/nextjs'
 
 import { LogIn } from 'lucide-react'
 import Image from 'next/image'
@@ -8,7 +9,7 @@ import Link from 'next/link'
 import React from 'react'
 
 function SideNav({toggleSideBar}) {
-  
+  const {user} = useUser();
   return (
     <div className=' h-full p-5 '>
         <Image src='/logo.svg' alt='logo'
@@ -30,9 +31,12 @@ function SideNav({toggleSideBar}) {
         </div>
         <div className='absolute bottom-10 flex gap-3 items-center'>
      
-            <h2>
-          <Button variant="ghost" className='flex gap-2 items-center cursor-pointer'><LogIn/>
-          Sign In</Button></h2>
+          {!user ? <Link href='sign-in'>
+                <Button variant="ghost" className='flex gap-2 items-center cursor-pointer'><LogIn/>
+                Sign In</Button>
+          </Link> :
+          <div className='flex items-center gap-3  p-3'><UserButton/>
+                Profile</div>}
         </div>
     </div>
   )
